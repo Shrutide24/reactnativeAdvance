@@ -1,0 +1,9 @@
+**************** initial the project/git
+first create a new repo in github .
+second <git init>.  to your local folder
+3 <git remote add origin https://github.com/Shrutide24/reactnativeAdvance.git>  now link the local folder to remote repo
+4 <git add .>  to add all the files to git
+5 now commit all the change <git commit -m "message">
+6 push local repo to remote repo <git push origin master>
+-------------
+7 now create a new branch <git checkout -b <newbranchname>>

@@ -1,12 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import Index from './firebase';
+import SignIn from './firebase/signIn';
+import SignUp from './firebase/signUp';
+import Navigator from './firebase/navigation';
+import Home from './firebase/Home';
+import ProductInfo from './firebase/productInfo';
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    // <Index/>
+    // <SignIn />
+    // <SignUp/>
+    // <Navigator/>
+    // <Home/>
+    <ProductInfo/>
   );
 }
 
