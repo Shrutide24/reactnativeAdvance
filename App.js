@@ -13,9 +13,9 @@ export default function App() {
     // <Index/>
     // <SignIn />
     // <SignUp/>
-    // <Navigator/>
+    <Navigator/>
     // <Home/>
-    <ProductInfo/>
+    // <ProductInfo/>
   );
 }
 

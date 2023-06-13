@@ -1,11 +1,36 @@
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesome } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context'
+import axios from 'axios';
 
 export default function Home({ navigation }) {
+  const [id, setId]=useState();
+  const [data,setData]=useState([]) ;
+// api section
+const baseUrl = 'https://dummyjson.com/products';
+ // Passing configuration object to axios
+
+ 
+
+useEffect(() => {
+    const fetchUser = async () => {
+      const configurationObject = {
+        method: 'get',
+        url: `${baseUrl}`,
+      };
+      const response = await axios(configurationObject);
+      setData(response.data.products);
+    };
+
+    fetchUser();
+  }, []);
+
+console.log("avinash",data)
+
+
     const DATA = [
         {
           id: "1",
@@ -43,26 +68,28 @@ export default function Home({ navigation }) {
 
       const Details = ({item}) => (
         <TouchableOpacity 
-        onPress={()=>{ navigation.navigate("ProductInfo")}}
+        onPress={()=>{ navigation.navigate("ProductInfo" ,{
+          item:item.id
+        })
+        }}
         style={{flexDirection:'row',}} >
             <View style={{borderWidth:1,margin:10,borderRadius:5}}>
-           <Image source={{ uri: 'https://i.dummyjson.com/data/products/1/thumbnail.jpg' }}
+           <Image source={{ uri: item.thumbnail }}
          style={styles.productImage}  
          resizeMode="contain"/>
 
          </View>
          <View style={styles.text}>
-           <Text style={{color:'green'}}>Sponserd</Text>
-           <Text style={{fontWeight:'bold',fontSize:17}}>SAMSUNG Galaxy S23 </Text>
-           <Text style={{fontWeight:'bold',fontSize:17}}>Ultra Cell Phone,Factory </Text>
-           <Text style={{fontWeight:'bold',fontSize:17}}>Unlocked Android </Text>
-           <Text style={{fontWeight:'bold',fontSize:17}}>Smartphone,256GB,</Text>
-           <Text style={{fontWeight:'bold',fontSize:17}}>200MP... </Text>
-           <Text style={{color:'blue'}}>90 days FREE.Terms Apply.</Text>
-           <Text style={{fontWeight:'bold',fontSize:17}}>$999</Text>  
-           <Text style={{color:'darkblue',fontWeight:'bold'}}>Ship to India</Text>
-           <Text style={{color:'gray'}}>Options: 3 sizes</Text>
-           <Text style={{color:'gray'}}>+3 color/patterns</Text>
+           <Text style={{color:'green'}}>{item.title}</Text>
+           <Text style={{fontWeight:'bold',fontSize:15,width:200}}>{item.description}</Text>
+         
+           
+           <Text style={{color:'blue'}}>{item.price}</Text>
+           <Text style={{fontWeight:'bold',fontSize:17}}>{item.discountPercentage}</Text>  
+           <Text style={{color:'darkblue',fontWeight:'bold'}}>{item.rating}</Text>
+           <Text style={{fontWeight:'bold'}}>{item.brand}</Text>
+           <Text style={{fontWeight:'bold'}}>{item.category}</Text>
+           <Text style={{color:'blue'}}>Stock:{item.stock}</Text>
 
            </View>
             
@@ -109,7 +136,7 @@ export default function Home({ navigation }) {
         {/* product information */}
         <View>
         <FlatList
-        data={DATA}
+        data={data}
         renderItem={({item}) => <Details item={item} />}
         keyExtractor={item => item.id}
         showsVerticalScrollIndicator={false}

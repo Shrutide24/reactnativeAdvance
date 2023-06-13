@@ -8,8 +8,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 
 
 export default function({ navigation}) {
-    const [email,setEmail] =useState('')
-    const [password,setPassword] =useState('')
+    const [email,setEmail] =useState('1624shruti@gmail.com')
+    const [password,setPassword] =useState('asdfgh')
     const [hidepassword,setHidepassword]=useState(true)
 
     const changePassword=()=>{

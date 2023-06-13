@@ -1,7 +1,40 @@
 import { View, Text, Image, StyleSheet,FlatList } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-const ProductInfo = () => {
+import axios from 'axios';
+import Header from './components/Header';
+
+const ProductInfo = ({ route, navigation}) => {
+  console.log("param data >>>",route)
+  const { item} = route.params;
+  console.log("id>>>>>",item)
+
+const [data,setData]=useState([]) ;
+// api section
+const baseUrl = 'https://dummyjson.com/products';
+ // Passing configuration object to axios
+
+ 
+
+useEffect(() => {
+    const fetchUser = async () => {
+      const configurationObject = {
+        method: 'get',
+        url: `${baseUrl}/${item}`,
+      };
+      const response = await axios(configurationObject);
+      setData(response.data);
+    };
+
+    fetchUser();
+  }, []);
+
+console.log("product detatil>>>",data)
+
+// 
+
+
+
     const DATA = [
         {
           id: "1",
@@ -30,7 +63,7 @@ const ProductInfo = () => {
        ];
     const Info = ({item}) => (
      <View style={{borderWidth:1,margin:10,borderRadius:5}}>
-     <Image source={{ uri: 'https://i.dummyjson.com/data/products/1/thumbnail.jpg' }}
+     <Image source={{ uri:item  }}
          style={styles.productImage}  
          resizeMode="contain"/>
      </View>    
@@ -39,9 +72,14 @@ const ProductInfo = () => {
   return (
   
     <View style={styles.container}>
+      {/* navigation */}
+      <Header/>
+
+     
+
       <View >
         <FlatList
-        data={DATA}
+        data={data.images}  
         renderItem={({item}) => <Info item={item} />}
         keyExtractor={item => item.id}
         horizontal={true}
@@ -49,26 +87,28 @@ const ProductInfo = () => {
         pagingEnabled
       />
      </View>
+     
       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-      <Text style={styles.title}>SAMSUNG Galaxy S23,256GB,200MP</Text>
+      <View style={styles.text}>
+           <Text style={{color:'green'}}>{data.title}</Text>
+           <Text style={{fontWeight:'bold',fontSize:15,width:200}}>{data.description}</Text>
+         
+           
+           <Text style={{color:'blue'}}>{data.price}</Text>
+           <Text style={{fontWeight:'bold',fontSize:17}}>{data.discountPercentage}</Text>  
+           <Text style={{color:'darkblue',fontWeight:'bold'}}>{data.rating}</Text>
+           <Text style={{fontWeight:'bold'}}>{data.brand}</Text>
+           <Text style={{fontWeight:'bold'}}>{data.category}</Text>
+           <Text style={{color:'blue'}}>Stock:{data.stock}</Text>
+
+           </View>
+      {/* <Text style={styles.title}>{data.title}</Text>
       <View>
-      <Text style={styles.description}>30% off</Text>
-      <Text style={styles.price}>$999</Text>
+      <Text style={styles.description}>{data.discountPercentage}</Text>
+      <Text style={styles.price}>{data.price}</Text>
+      </View> */}
       </View>
-      </View>
-      <View>
-        <Text style={styles.text}>AVAILABLE SIZES</Text>
-        <View style={{flexDirection:'row',justifyContent:'space-around',margin:10,}}>
-        <Text style={styles.size}>  UK7 </Text>
-        <Text style={styles.size}>  UK8 </Text>
-        <Text style={styles.size}>  UK9 </Text>
-        <Text style={styles.size}>  UK10 </Text>
-        </View>
-        <View style={{marginTop:10,borderWidth:1,borderRadius:10}}>
-          <Text style={{fontSize:25}}>  Cash on delivery on all below $555.</Text>
-          <Text style={{marginTop:5,fontSize:25}}>  Cash on delivery on all below.</Text>
-        </View>
-      </View>
+      
     </View>
   );
 };
@@ -100,7 +140,7 @@ const styles = StyleSheet.create({
     
   },
   text:{
-    fontSize:20,
+    fontSize:15,
     color:'gray',
     fontWeight:'bold',
     marginTop:10,
@@ -110,7 +150,12 @@ const styles = StyleSheet.create({
     color:'gray',
     borderRadius:10,
     borderWidth:1,
-  }
+  },
+  View:{
+    flexDirection:'row',
+    marginTop:20,
+    justifyContent:'space-between',
+},
   
 });
 
